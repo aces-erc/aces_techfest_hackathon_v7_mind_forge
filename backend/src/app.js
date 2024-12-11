@@ -1,7 +1,8 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import cors from "cors"
-import userRouter from "./routes/user.routes"
+import userRouter from "./routes/user.routes.js"
+import globalErrorController from "./controllers/error.controller.js"
 
 const app = express()
 
@@ -27,5 +28,7 @@ app.use(cookieParser()) // allows to access cookies of browser as well set the c
 
 // routes
 app.use("/api/v1/user", userRouter)
+
+app.use(globalErrorController)
 
 export { app }
