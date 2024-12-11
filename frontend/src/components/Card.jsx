@@ -13,7 +13,9 @@ const Card = ({ icon, title, description, buttonText, buttonColor }) => (
       alignItems: "center",
       textAlign: "center",
       gap: "15px",
+      backgroundColor: "#E0EAF5",
     }}
+    className="shadow-lg"
   >
     <div
       style={{
