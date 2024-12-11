@@ -9,7 +9,7 @@ const register = catchAsync(async (req, res, next) => {
     const { fullName, email, password, phoneNumber, role, vehicleNumber, hospitalAddress, hospitalLocation, specialization, dob } = req.body
 
     console.log("yo mathi ho")
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findOne({ email, phoneNumber })
 
     console.log("bichako")
     if (existingUser) {

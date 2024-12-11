@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import axios from "axios"
+import { backendApi } from "@/lib/constant"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   email: z.string().email({
@@ -27,8 +30,9 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -36,12 +40,13 @@ export default function LoginForm() {
     },
   })
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
     setIsLoading(true)
-    // Simulate API call
+    
     try {
-        
-        console.log(values)
+        const res = await  axios.post(`${backendApi}/user/login`, values)  
+        console.log(res)
+        router.push("/dashboard");
     } catch (error) {
         console.error(error)
     }
