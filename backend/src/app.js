@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { Server as SocketServer } from 'socket.io'; // import the server part of socket.io
 import http from 'http';
+import globalErrorController from "./controllers/error.controller.js"
 
 
 const app = express();
@@ -12,19 +13,19 @@ const io = new SocketServer(server);
 
 // Listen for socket connection
 io.on('connection', (socket) => {
-    console.log('A user connected');
-    
-    // Listen for custom events from the client
-    socket.on('message', (data) => {
-        console.log('Message from client:', data);
-        // Broadcast to all clients except the sender
-        socket.broadcast.emit('message', data);
-    });
+  console.log('A user connected');
 
-    // Handle socket disconnect
-    socket.on('disconnect', () => {
-        console.log('A user disconnected');
-    });
+  // Listen for custom events from the client
+  socket.on('message', (data) => {
+    console.log('Message from client:', data);
+    // Broadcast to all clients except the sender
+    socket.broadcast.emit('message', data);
+  });
+
+  // Handle socket disconnect
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
 });
 
 // development logging
@@ -52,5 +53,5 @@ app.use("/api/v1/user", userRouter)
 
 app.use(globalErrorController)
 
-export {app}
-export {server}
+export { app }
+export { server }
