@@ -28,6 +28,12 @@ const userSchema = new Schema(
             enum: ['Patient', 'Ambulance', 'Hospital'],
             required: true
         },
+        phoneNumber:
+        {
+            type: Number,
+            required: true,
+            unique: true
+        }
     },
     { discriminatorKey: 'role', timestamps: true }
 );
