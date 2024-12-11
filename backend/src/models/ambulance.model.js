@@ -1,52 +1,31 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
+import { User } from "./user.model";
 
 const ambulanceSchema = new mongoose.Schema({
-  driverName: {
-    type: String,
-    required: true,
-  },
-  vehicleNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  location: {
-    type: {
-      latitude: { type: Number, required: true },
-      longitude: { type: Number, required: true },
+    vehicleNumber: {
+        type: String,
+        required: true,
+        unique: true
     },
-    required: true,
-  },
-  liveLocation: {
-    type: {
-      latitude: { type: Number },
-      longitude: { type: Number },
+    liveLocation: {
+        type: {
+            latitude: { type: Number },
+            longitude: { type: Number }
+        }
     },
-  },
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
-  },
-  status: {
-    type: String,
-    enum: ["available", "on-trip", "unavailable"],
-    default: "available",
-  },
-  healthConditionRating: {
-    type: Number,
-    min: 1,
-    max: 10,
-  },
-  hospitalAssigned: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hospital",
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+    patient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Patient'
+    },
+    status: {
+        type: String,
+        enum: ['available', 'unavailable'],
+        default: 'available'
+    },
+    hospitalAssigned: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hospital'
+    },
+}, { timestamps: true });
 
-const Ambulance = mongoose.model("Ambulance", ambulanceSchema)
-
-export default Ambulance
+export const Ambulance = User.discriminator('Ambulance', ambulanceSchema);;
