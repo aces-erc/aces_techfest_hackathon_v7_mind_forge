@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.register-card {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.15);
+}
 body {
   font-family: Arial, Helvetica, sans-serif;
 }

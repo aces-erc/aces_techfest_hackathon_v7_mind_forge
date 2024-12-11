@@ -2,32 +2,16 @@
 
 import Button from "./Button";
 
-const Card = ({ icon, title, description, buttonText, buttonColor }) => (
-  <div
-    style={{
-      border: "1px solid #e0e0e0",
-      borderRadius: "8px",
-      padding: "20px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      textAlign: "center",
-      gap: "15px",
-      backgroundColor: "#E0EAF5",
-    }}
-    className="shadow-lg"
-  >
+const Card = ({ children, title, description, buttonText, buttonColor }) => (
+  <div className="border-none rounded-xl border-t border-b border-gray-300 py-7 lg:py-9 px-6 lg:px-3 flex flex-col items-center text-center gap-4 lg:gap-5 shadow-lg register-card">
     <div
-      style={{
-        backgroundColor: `${buttonColor}20`,
-        borderRadius: "50%",
-        padding: "15px",
-      }}
+      className="flex items-center justify-center rounded-full w-20 h-20"
+      style={{ backgroundColor: `${buttonColor}20` }}
     >
-      {icon}
+      {children}
     </div>
-    <h2 style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{title}</h2>
-    <p style={{ color: "#666", fontSize: "0.9rem" }}>{description}</p>
+    <h2 className="text-2xl font-semibold">{title}</h2>
+    <p className="text-gray-600 text-lg">{description}</p>
     <Button color={buttonColor}>{buttonText}</Button>
   </div>
 );
