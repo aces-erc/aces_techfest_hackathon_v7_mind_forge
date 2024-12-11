@@ -8,15 +8,11 @@ import { Ambulance } from "../models/ambulance.model.js"
 const register = catchAsync(async (req, res, next) => {
     const { fullName, email, password, phoneNumber, role, vehicleNumber, hospitalAddress, hospitalLocation, specialization, dob } = req.body
 
-    console.log("yo mathi ho")
-    const existingUser = await User.findOne({ email, phoneNumber })
+    const existingUser = await User.findOne({ email })
 
-    console.log("bichako")
     if (existingUser) {
         throw new AppError("The user with this email already exists", 400)
     }
-
-    console.log("askfhas")
 
     let newUser
 
@@ -64,7 +60,7 @@ const login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body
 
     if (!email || !password) {
-        return next(new AppError("Please provide email, password and role", 400))
+        return next(new AppError("Please provide email and password", 400))
     }
 
     const user = await User.findOne({ email }).select("+password")
@@ -95,6 +91,20 @@ const login = catchAsync(async (req, res, next) => {
         })
 })
 
+const logout = catchAsync(async (req, res, next) => {
+    res
+        .status(200)
+        .cookie("token", "", {
+            expires: new Date(Date.now() - 1000),
+            httpOnly: true,
+        })
+        .json({
+            status: "success",
+            message: "Logged out successfully!",
+            data: null
+        })
+})
+
 export {
-    register, login
+    register, login, logout
 }
