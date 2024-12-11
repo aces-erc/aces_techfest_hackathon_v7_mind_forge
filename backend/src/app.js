@@ -1,9 +1,31 @@
-import express from "express"
-import cookieParser from "cookie-parser"
-import cors from "cors"
-import userRouter from "./routes/user.routes.js"
+import express from "express";
+import userRouter from "./routes/user.routes.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import { Server as SocketServer } from 'socket.io'; // import the server part of socket.io
+import http from 'http';
 
-const app = express()
+
+const app = express();
+const server = http.createServer(app);
+const io = new SocketServer(server);
+
+// Listen for socket connection
+io.on('connection', (socket) => {
+    console.log('A user connected');
+    
+    // Listen for custom events from the client
+    socket.on('message', (data) => {
+        console.log('Message from client:', data);
+        // Broadcast to all clients except the sender
+        socket.broadcast.emit('message', data);
+    });
+
+    // Handle socket disconnect
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+});
 
 // development logging
 if (process.env.NODE_ENV === "development") {
@@ -28,4 +50,8 @@ app.use(cookieParser()) // allows to access cookies of browser as well set the c
 // routes
 app.use("/api/v1/user", userRouter)
 
-export { app }
+
+
+
+export {app};
+export {server}
