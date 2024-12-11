@@ -50,7 +50,7 @@ const register = catchAsync(async (req, res, next) => {
             specialization
         });
     } else {
-        return next(new AppError("Inappropriate role!", 404))
+        throw new AppError("Inappropriate role!", 404)
     }
 
     res.status(201).json({

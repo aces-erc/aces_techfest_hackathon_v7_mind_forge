@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { Server as SocketServer } from 'socket.io'; // import the server part of socket.io
 import http from 'http';
-import globalErrorController from "./controllers/error.controller.js"
+import AppError from "./utils/appError.js";
 
 
 const app = express();
@@ -28,11 +28,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// development logging
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"))
-}
-
 const allowedOrigins = process.env.CORS_ORIGIN.split(",") // split the string by comma and store in array
 
 app.use(
@@ -51,7 +46,24 @@ app.use(cookieParser()) // allows to access cookies of browser as well set the c
 // routes
 app.use("/api/v1/user", userRouter)
 
-app.use(globalErrorController)
+app.use((err, req, res, next) => {
+    console.log("error: ",err)
+    if (err instanceof AppError) {
+      res.status(err.statusCode).json({
+        success: err.success,
+        message: err.message,
+        errors: err.errors,
+        data: err.data,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Something went wrong",
+        errors: [err.message],
+        data: null,
+      });
+    }
+  });
 
 export { app }
 export { server }
