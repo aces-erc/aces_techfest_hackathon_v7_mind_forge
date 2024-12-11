@@ -33,8 +33,8 @@ const patientSchema = new mongoose.Schema({
     },
     waitingStatus: {
         type: String,
-        enum: ['pending', 'pickedup', 'reached'],
-        default: 'pending'
+        enum: ['pending', 'pickedup', 'reached', 'none'],
+        default: 'none'
     }
 }, { timestamps: true });
 
