@@ -1,16 +1,10 @@
+"use client";
+
 const Button = ({ children, color, onClick }) => (
   <button
     onClick={onClick}
-    style={{
-      padding: "10px 20px",
-      backgroundColor: color,
-      color: "white",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      width: "100%",
-      fontWeight: "bold",
-    }}
+    className={`py-2 px-5 bg-[${color}] text-white border-none rounded-md cursor-pointer w-full font-normal`}
+    style={{ backgroundColor: color }}
   >
     {children}
   </button>
