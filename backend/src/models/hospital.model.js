@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import { User } from "./user.model";
+import { User } from "./user.model.js";
 
 const hospitalSchema = new mongoose.Schema({
-    address: {
+    hospitalAddress: {
         type: String,
         required: true
     },
-    location: {
+    hospitalLocation: {
         type: {
             latitude: { type: Number, required: true },
             longitude: { type: Number, required: true }

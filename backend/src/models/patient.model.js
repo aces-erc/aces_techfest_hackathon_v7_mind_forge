@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { User } from "./user.model";
+import { User } from "./user.model.js";
 
 
 const patientSchema = new mongoose.Schema({
@@ -22,7 +22,6 @@ const patientSchema = new mongoose.Schema({
             latitude: { type: Number, required: true },
             longitude: { type: Number, required: true }
         },
-        required: true
     },
     ambulanceAssigned: {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,9 +33,9 @@ const patientSchema = new mongoose.Schema({
     },
     waitingStatus: {
         type: String,
-        enum: ['pending', 'pickedup','reached'],
-        default: 'pending'
+        enum: ['pending', 'pickedup', 'reached', 'none'],
+        default: 'none'
     }
 }, { timestamps: true });
 
-export const Patient =  User.discriminator('Patient', patientSchema);;
+export const Patient = User.discriminator('Patient', patientSchema);;
