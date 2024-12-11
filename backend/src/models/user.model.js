@@ -1,19 +1,60 @@
-import mongoose from "mongoose"
+import mongoose, { Schema } from "mongoose";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import validator from "validator";
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "The name field should not be blank"],
-  },
-  email: {
-    type: String,
-    required: [true, "Email address is required"],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, "Please enter a valid email address"],
-  },
-})
+const userSchema = new Schema(
+    {
+        email: {
+            type: String,
+            required: [true, "Please provide an email"],
+            unique: true,
+            lowercase: true,
+            trim: true,
+            validate: [validator.isEmail, "Please enter email in correct format"],
+        },
+        fullName: {
+            type: String,
+            required: [true, "Please provide your fullname"],
+            trim: true,
+        },
+        password: {
+            type: String,
+            required: [true, "Password is required"],
+            select: false,
+        },
+        role: {
+            type: String,
+            enum: ['Patient', 'Ambulance', 'Hospital'],
+            required: true
+        },
+    },
+    { discriminatorKey: 'role', timestamps: true }
+);
 
-const User = mongoose.model("User", userSchema)
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
 
-export default User
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
+userSchema.methods.isPasswordCorrect = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.generateJwtToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+            fullName: this.fullName,
+        },
+        process.env.JWT_TOKEN_SECRET,
+        {
+            expiresIn: process.env.JWT_TOKEN_EXPIRY,
+        }
+    );
+};
+
+export const User = mongoose.model("User", userSchema);
