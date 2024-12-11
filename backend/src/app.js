@@ -1,8 +1,30 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { Server as SocketServer } from 'socket.io'; // import the server part of socket.io
+import http from 'http';
+
 
 const app = express();
+const server = http.createServer(app);
+const io = new SocketServer(server);
+
+// Listen for socket connection
+io.on('connection', (socket) => {
+    console.log('A user connected');
+    
+    // Listen for custom events from the client
+    socket.on('message', (data) => {
+        console.log('Message from client:', data);
+        // Broadcast to all clients except the sender
+        socket.broadcast.emit('message', data);
+    });
+
+    // Handle socket disconnect
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+});
 
 
 const allowedOrigins = process.env.CORS_ORIGIN.split(",");  // split the string by comma and store in array
@@ -25,3 +47,4 @@ app.use(cookieParser()); // allows to access cookies of browser as well set the 
 
 
 export {app};
+export {server}
