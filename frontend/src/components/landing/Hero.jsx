@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -18,7 +19,7 @@ export function Hero() {
 
           <div className="flex flex-wrap gap-4">
             <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-6 text-lg rounded-full">
-              Get Started Now
+              <Link href="/chooserole">Get Started Now</Link>
             </Button>
             <Button
               variant="outline"
@@ -47,7 +48,7 @@ export function Hero() {
         </div>
 
         <div className="relative">
-          <div className="bg-gray-200 rounded-lg aspect-[4/3] w-full overflow-hidden flex items-center justify-center bg-[#c3b5b5]">
+          <div className="bg-gray-200 rounded-lg aspect-[4/3] w-full overflow-hidden flex items-center justify-center ">
             <h1 className=" text-4xl font-bold text-red-500">
               Emergency Response
             </h1>
