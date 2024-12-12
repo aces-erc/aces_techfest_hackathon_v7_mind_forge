@@ -1,5 +1,19 @@
+"use client";
+
+import Sidebar from "@/components/ambulance/Sidebar";
+import ComponentA from "@/components/ambulance/ComponentA";
+import ComponentB from "@/components/ambulance/ComponentB";
+
 const page = () => {
-  return <div>page</div>;
+  return (
+    <div className="flex">
+      <Sidebar />
+      <div className="w-full">
+        <ComponentA />
+        <ComponentB />
+      </div>
+    </div>
+  );
 };
 
 export default page;

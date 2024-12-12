@@ -8,7 +8,6 @@ import { faHospital } from "@fortawesome/free-solid-svg-icons";
 import Card from "@/components/Card";
 
 function ChooseRole({ children, color, onClick }) {
- 
   return (
     <main>
       <NavBar btnContent={"Login"} hrefLink={"/login"} />
