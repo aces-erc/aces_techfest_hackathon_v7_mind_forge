@@ -38,11 +38,11 @@ const HowItWorks = () => {
                 <Typography
                   variant="h6"
                   component="span"
-                  className=" text-2xl text-slate-950"
+                  className=" text-2xl text-red-600 "
                 >
                   Request Emergency Service
                 </Typography>
-                <Typography className=" text-red-600 text-justify">
+                <Typography className="  text-justify">
                   Open the app and request immediate assistance. Share your
                   location and describe the emergency situation or health
                   condition.
@@ -64,11 +64,11 @@ const HowItWorks = () => {
                 <Typography
                   variant="h6"
                   component="span"
-                  className=" text-2xl text-salte-950"
+                  className=" text-2xl text-red-600"
                 >
                   Ambulance Dispatch
                 </Typography>
-                <Typography className=" text-red-600 text-justify">
+                <Typography className="text-justify">
                   The nearest available ambulance choosen by you will be
                   dispatched to your location with real-time tracking for both
                   parties.
@@ -90,11 +90,11 @@ const HowItWorks = () => {
                 <Typography
                   variant="h6"
                   component="span"
-                  className=" text-2xl text-slate-950"
+                  className=" text-2xl text-red-600 "
                 >
                   Hospital Selection
                 </Typography>
-                <Typography className=" text-red-600 text-justify">
+                <Typography className="text-justify">
                   Based on your condition, appropriate hospitals are suggested.
                   Choose your preferred facility or let the ambulance team
                   decide.
@@ -116,11 +116,11 @@ const HowItWorks = () => {
                 <Typography
                   variant="h6"
                   component="span"
-                  className=" text-2xl text-slate-950"
+                  className=" text-2xl text-red-600"
                 >
                   Hospital Preparation
                 </Typography>
-                <Typography className=" text-red-600 text-justify">
+                <Typography className="text-justify">
                   Hospital receives real-time updates about your condition and
                   estimated arrival time to prepare for immediate treatment.
                 </Typography>

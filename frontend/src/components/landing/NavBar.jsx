@@ -7,7 +7,7 @@ const NavBar = ({ display, btnContent, hrefLink }) => {
     <nav className="w-full py-4 px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-4xl font-bold text-red-600">
-          Sahara
+          SAHARA
         </Link>
         <div className="flex gap-24">
           <div className={`hidden md:${display}  items-center gap-8 text-lg`}>
