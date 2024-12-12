@@ -10,14 +10,14 @@ const Sidebar = () => {
 
       <nav className="space-y-2">
         <a
-          href="#emergency"
+          href="# "
           className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-slate-800 rounded-lg"
         >
           <Menu className="h-5 w-5" />
           <span>Emergency</span>
         </a>
         <a
-          href="#"
+          href="#hospital"
           className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-slate-800 rounded-lg"
         >
           <Home className="h-5 w-5" />
@@ -31,7 +31,7 @@ const Sidebar = () => {
           <span>Tracking</span>
         </a>
         <a
-          href="#"
+          href="#status"
           className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:bg-slate-800 rounded-lg"
         >
           <User className="h-5 w-5" />
