@@ -53,7 +53,7 @@ export default function LoginForm() {
             const res = await axios.post(`${backendApi}/user/login`, values, { withCredentials: true })
             console.log(res.data.user)
             setUser(res.data.user)
-            // router.push("/dashboard");
+            router.push("/dashboard");
         } catch (error) {
             toast({
                 title: "Error",

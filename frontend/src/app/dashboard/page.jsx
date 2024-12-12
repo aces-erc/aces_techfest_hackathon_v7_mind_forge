@@ -1,6 +1,8 @@
+"use client"
 import Button from "@/components/Button";
 import DashboardLayout from "@/components/landing/DashboardLayout";
 import { Card } from "@/components/ui/card";
+import { useUserStore } from "@/store/userStore";
 import React from "react";
 
 
@@ -104,9 +106,12 @@ const QuickStats = () => (
 );
 
 const PatientDashboard = () => {
+
+  const {user} = useUserStore();
+
   return (
     <DashboardLayout
-      title="Welcome, John Doe"
+      title={`Welcome, ${user?.fullName || ""}`}
       subtitle="Patient ID: #12345"
       actionButton={<Button color="red">Emergency SOS</Button>}
     >
