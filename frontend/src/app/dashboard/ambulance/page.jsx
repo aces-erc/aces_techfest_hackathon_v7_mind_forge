@@ -4,7 +4,9 @@ import Sidebar from "@/components/ambulance/Sidebar";
 import ComponentA from "@/components/ambulance/ComponentA";
 import ComponentB from "@/components/ambulance/ComponentB";
 
-const page = () => {
+
+
+const Page = () => {
   return (
     <div className="flex">
       <Sidebar />
@@ -16,4 +18,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

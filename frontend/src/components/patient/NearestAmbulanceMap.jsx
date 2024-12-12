@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
+import { useLocation } from '@/store/locationStore'
+import { useSocket } from '@/store/useSocket'
 
 // Custom icon definitions
 const customIcon = new L.Icon({
@@ -18,7 +20,7 @@ const customIcon = new L.Icon({
 const userIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
+    iconSize: [50, 61],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
@@ -74,6 +76,8 @@ export default function RandomLocationsMap() {
     const [locations, setLocations] = useState([])
     const [userLocation, setUserLocation] = useState(null)
     const [locationError, setLocationError] = useState(null)
+    const { setUserLocationStore, userLocationStore } = useLocation();
+    const { ambulanceLocation } = useSocket();
 
     useEffect(() => {
         if ("geolocation" in navigator) {
@@ -84,7 +88,7 @@ export default function RandomLocationsMap() {
                         lng: position.coords.longitude
                     };
                     setUserLocation(userPos);
-                    setLocations(getAmbulanceLocations(userPos, 5));
+                    setLocations(ambulanceLocation);
                 },
                 (error) => {
                     setLocationError("Unable to retrieve your location")
@@ -100,6 +104,10 @@ export default function RandomLocationsMap() {
         }
     }, [])
 
+    useEffect(() => {
+        localStorage.setItem("userLocation", JSON.stringify(userLocation))
+    }, [userLocation])
+
     return (
         <div className="flex flex-col items-center space-y-4">
             {locationError && (
@@ -112,7 +120,7 @@ export default function RandomLocationsMap() {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <LocationMarker position={userLocation} setPosition={setUserLocation} />
-                    {locations.map((location, index) => (
+                    {ambulanceLocation.map((location, index) => (
                         <Marker key={index} position={[location.lat, location.lng]} icon={customIcon}>
                             <Popup>
                                 Ambulance {index + 1}<br />
