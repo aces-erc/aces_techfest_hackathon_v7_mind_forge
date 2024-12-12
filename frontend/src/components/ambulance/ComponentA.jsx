@@ -108,17 +108,20 @@ export default function ComponentA() {
                     </div>
                     <div className="space-x-2">
                       {
-                        decision ? 
-                        <Button variant="default" disable >{decision}</Button>
-                        : 
-                        <>
-                          <Button variant="default" onClick={() => handlePatientRequest("Accepted")}>Accept</Button>
-                          <Button variant="outline" onClick={() => handlePatientRequest("Declined")}>Decline</Button>
-                        </>
+                        decision ?
+                          <Button variant="default" disable >{decision}</Button>
+                          :
+                          <>
+                            <Button variant="default" onClick={() => handlePatientRequest("Accepted")}>Accept</Button>
+                            <Button variant="outline" onClick={() => handlePatientRequest("Declined")}>Decline</Button>
+                          </>
                       }
-                    
+
                     </div>
                   </div>
+                  <h3 className="text-lg font-semibold mb-2">
+                    {patientDetail?.hospital}
+                  </h3>
                   <h3 className="text-lg font-semibold mb-2">
                     {patientDetail?.user?.fullName} - {patientDetail?.disease}
                   </h3>

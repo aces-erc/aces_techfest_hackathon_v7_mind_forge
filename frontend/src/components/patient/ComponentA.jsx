@@ -6,11 +6,11 @@ import {
   Heart,
   HelpCircle,
   LogOut,
-  MapPin,
   Menu,
   User,
   Phone,
   MessageSquare,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/store/userStore";
@@ -18,12 +18,17 @@ import { useEffect, useState } from "react";
 import { useSocket } from "@/store/useSocket";
 import { useToast } from "@/hooks/use-toast";
 
-
 export default function ComponentA() {
   const { user } = useUserStore();
   const { socket, ambulanceList, setAmbulanceList, setAmbulanceLocation, ambulanceLocation, setPatientDisease, patientDisease } = useSocket();
   const [isBooked, setIsBooked] = useState("Book Now")
   const { toast } = useToast()
+  const [selectHospital, setSelectHospital] = useState("");
+
+
+  const handleHospitalSelect = (hospital) => {
+    setSelectHospital(hospital);
+  }
 
   useEffect(() => {
     if (socket) {
@@ -35,28 +40,35 @@ export default function ComponentA() {
 
       socket.on("decision", (data) => {
         setIsBooked(data);
+        
       })
     }
   }, [socket])
 
   useEffect(() => {
-    console.log("List: ", ambulanceList);
-    console.log("List Location: ", ambulanceLocation);
-  }, [ambulanceList])
+    if(socket){
+      if (isBooked === "Accepted") {
+        const userLocation = JSON.parse(localStorage.getItem("userLocation"))
+        const vehicleNumber = localStorage.getItem("ambulanceNo")
+        socket.emit("notifyHospital", { user, location: userLocation, disease: patientDisease, hospital: selectHospital, ambulanceNo: vehicleNumber });
+      }
+    }
+  }, [isBooked, socket])
 
-  const bookNow = () => {
+  const bookNow = (vehicleNumber) => {
     if (socket) {
       console.log("book data send: ", localStorage.getItem("userLocation"), user)
-      if (!patientDisease) {
+      localStorage.setItem("ambulanceNo", vehicleNumber)
+      if (!patientDisease || !selectHospital) {
         toast({
           title: "Error",
-          description: "Please select disease",
+          description: "Please select disease and hospital",
           variant: "destructive",
         })
         return;
       }
       const userLocation = JSON.parse(localStorage.getItem("userLocation"))
-      socket.emit('bookAmbulance', { user, location: userLocation, disease: patientDisease });
+      socket.emit('bookAmbulance', { user, location: userLocation, disease: patientDisease, hospital: selectHospital });
       setIsBooked("Pending Request")
       toast({
         title: "Success",
@@ -68,7 +80,7 @@ export default function ComponentA() {
   return (
     <main className="flex-1">
       <div className="flex justify-between items-center px-8 pt-8 pb-6 bg-slate-200">
-        <h1 className="text-2xl font-semibold">Welcome,{user?.fullName}</h1>
+        <h1 className="text-2xl font-semibold">Welcome, {user?.fullName}</h1>
         <div className="flex items-center gap-4">
           <Bell className="h-5 w-5 text-gray-500" />
           <LogOut className="h-5 w-5 text-gray-500" />
@@ -118,31 +130,68 @@ export default function ComponentA() {
           </div>
         </div>
 
-        <div className="mb-8">
-          <h3 className="text-gray-600 mb-4">Your Location</h3>
-          <div className="bg-gray-50 p-4 rounded-lg border flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <MapPin className="h-5 w-5 text-gray-500" />
-              <div>
-                <div className="font-medium">Current Location</div>
-                <div className="text-sm text-gray-500">
-                  123 Street Name, City, Country
+        <div id="hospital" className="bg-white rounded-lg shadow-sm border p-4">
+          <h2 className="font-semibold mb-4">Select Hospital</h2>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 border rounded-lg hover:border-blue-500 cursor-pointer">
+              <div className="flex gap-3">
+                <Building2 className="h-10 w-10 text-blue-500" />
+                <div>
+                  <h3 className="font-medium">City General Hospital</h3>
+                  <p className="text-sm text-gray-500">
+                    Trauma Center, ICU, Emergency Care
+                  </p>
+                  <p className="text-xs text-gray-400">Open 24/7</p>
                 </div>
               </div>
+              <Button size="sm" onClick={() => handleHospitalSelect("City General Hospital")}>{
+                selectHospital === "City General Hospital" ? "Selected" : "Select"
+              }</Button>
             </div>
-            <Button variant="link" className="text-blue-500">
-              Change
-            </Button>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg hover:border-blue-500 cursor-pointer">
+              <div className="flex gap-3">
+                <Building2 className="h-10 w-10 text-blue-500" />
+                <div>
+                  <h3 className="font-medium">Heart & Stroke Center</h3>
+                  <p className="text-sm text-gray-500">
+                    Cardiology, Neurology, Emergency Care
+                  </p>
+                  <p className="text-xs text-gray-400">Open 24/7</p>
+                </div>
+              </div>
+              <Button size="sm" onClick={() => handleHospitalSelect("Heart & Stroke Center")}>{
+                selectHospital === "Heart & Stroke Center" ? "Selected" : "Select"
+              }</Button>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg hover:border-blue-500 cursor-pointer">
+              <div className="flex gap-3">
+                <Building2 className="h-10 w-10 text-blue-500" />
+                <div>
+                  <h3 className="font-medium">Metro Emergency Hospital</h3>
+                  <p className="text-sm text-gray-500">
+                    Emergency Care, Surgery, ICU
+                  </p>
+                  <p className="text-xs text-gray-400">Open 24/7</p>
+                </div>
+              </div>
+              <Button size="sm" onClick={() => handleHospitalSelect("Metro Emergency Hospital")}>
+                {
+                  selectHospital === "Metro Emergency Hospital" ? "Selected" : "Select"
+                }
+              </Button>
+            </div>
           </div>
         </div>
 
         <div className="mb-8">
-          <h3 className="text-gray-600 mb-4">Nearest Available Ambulances</h3>
+          <h3 className="text-gray-600 mb-4 mt-4">Nearest Available Ambulances</h3>
           <div className="space-y-4">
 
             {
               ambulanceList.length > 0 && ambulanceList?.map((item, index) => (
-                <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
+                <div className="bg-white p-4 rounded-lg border flex justify-between items-center" key={index}>
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
                       <Car className="h-6 w-6 text-blue-500" />
@@ -152,11 +201,25 @@ export default function ComponentA() {
                       <div className="text-sm text-gray-500">{item?.user?.fullName}</div>
                     </div>
                   </div>
-                  <Button onClick={bookNow}>{
+                  <Button onClick={() => bookNow(item?.user?.vehicleNumber)}>{
                     isBooked}</Button>
                 </div>
               ))
-
+            }
+            {
+              ambulanceList.length === 0 &&
+              <>
+                <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Car className="h-6 w-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <div className="font-medium">Ambulance Not Available</div>
+                    </div>
+                  </div>
+                </div>
+              </>
             }
           </div>
         </div>
