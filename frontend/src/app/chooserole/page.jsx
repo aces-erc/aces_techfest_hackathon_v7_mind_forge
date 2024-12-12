@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 
 function ChooseRole({ children, color, onClick }) {
+ 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-5 font-sans md:p-10 md:pt-0">
       <h1 className="text-gray-900 text-[1.9rem] font-bold mt-4 mb-2">
@@ -24,6 +25,7 @@ function ChooseRole({ children, color, onClick }) {
           description="Register as a patient to book emergency ambulance services"
           buttonText="Register as Patient"
           buttonColor="#2563eb"
+          role={"Patient"}
         >
           <FontAwesomeIcon
             icon={faUserInjured}
@@ -35,6 +37,7 @@ function ChooseRole({ children, color, onClick }) {
           description="Register as an ambulance driver to provide emergency services"
           buttonText="Register as Driver"
           buttonColor="#34A853"
+          role={"Ambulance"}
         >
           <FontAwesomeIcon
             icon={faTruckMedical}
@@ -46,6 +49,7 @@ function ChooseRole({ children, color, onClick }) {
           description="Register your hospital to coordinate emergency services"
           buttonText="Register Hospital"
           buttonColor="#EA4335"
+          role={"Hospital"}
         >
           <FontAwesomeIcon
             icon={faHospital}
