@@ -6,7 +6,7 @@ import { Hospital } from "../models/hospital.model.js"
 import { Ambulance } from "../models/ambulance.model.js"
 
 const register = catchAsync(async (req, res, next) => {
-    const { fullName, email, password, phoneNumber, role, vehicleNumber, hospitalAddress, hospitalLocation, specialization, dob } = req.body
+    const { fullName, email, password, phoneNumber, role, vehicleNumber, hospitalAddress, latitude, longitude, specialization, dob } = req.body
 
     const existingUser = await User.findOne({ email })
 
@@ -42,12 +42,16 @@ const register = catchAsync(async (req, res, next) => {
             role,
             phoneNumber,
             hospitalAddress,
-            hospitalLocation,
+            hospitalLocation: {
+                latitude,
+                longitude
+            },
             specialization
         });
     } else {
         throw new AppError("Inappropriate role!", 404)
     }
+
 
     res.status(201).json({
         status: "success",
@@ -80,6 +84,9 @@ const login = catchAsync(async (req, res, next) => {
     }
 
     user.password = undefined // should not show up even if its hashed
+    user.createdAt = undefined
+    user.updatedAt = undefined
+    user.__v = undefined
 
     res
         .status(200)
