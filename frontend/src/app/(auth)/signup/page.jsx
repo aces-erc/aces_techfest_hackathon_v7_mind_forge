@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 import { RotatingLines } from 'react-loader-spinner';
 
 const LocationPicker = dynamic(() => import('@/components/LocationPicket'), {
-    ssr: false
+    ssr: false,
 })
 const PatientSignupForm = dynamic(() => import('@/components/auth/signup/PatientSignup'))
 

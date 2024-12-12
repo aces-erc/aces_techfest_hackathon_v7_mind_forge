@@ -1,3 +1,4 @@
+"use client"
 import {
   Bell,
   Brain,
@@ -13,12 +14,57 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/store/userStore";
-// import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { useSocket } from "@/store/useSocket";
+import { useToast } from "@/hooks/use-toast";
+
 
 export default function ComponentA() {
-  // const router = useRouter();
-  // const {  } = router.query;
-  const {user} = useUserStore();
+  const { user } = useUserStore();
+  const { socket, ambulanceList, setAmbulanceList, setAmbulanceLocation, ambulanceLocation, setPatientDisease, patientDisease } = useSocket();
+  const [isBooked, setIsBooked] = useState("Book Now")
+  const { toast } = useToast()
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('ambulanceLocation', (data) => {
+        setAmbulanceList([...ambulanceList, data]);
+        setAmbulanceLocation([...ambulanceLocation, data?.location]);
+        console.log("Ambulance Location: ", data);
+      });
+
+      socket.on("decision", (data) => {
+        setIsBooked(data);
+      })
+    }
+  }, [socket])
+
+  useEffect(() => {
+    console.log("List: ", ambulanceList);
+    console.log("List Location: ", ambulanceLocation);
+  }, [ambulanceList])
+
+  const bookNow = () => {
+    if (socket) {
+      console.log("book data send: ", localStorage.getItem("userLocation"), user)
+      if (!patientDisease) {
+        toast({
+          title: "Error",
+          description: "Please select disease",
+          variant: "destructive",
+        })
+        return;
+      }
+      const userLocation = JSON.parse(localStorage.getItem("userLocation"))
+      socket.emit('bookAmbulance', { user, location: userLocation, disease: patientDisease });
+      setIsBooked("Pending Request")
+      toast({
+        title: "Success",
+        description: "Booking Request Sent",
+      })
+    }
+  }
+
   return (
     <main className="flex-1">
       <div className="flex justify-between items-center px-8 pt-8 pb-6 bg-slate-200">
@@ -32,7 +78,7 @@ export default function ComponentA() {
       <div id="emergency" className="px-20 pt-14">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Book Emergency Ambulance</h2>
-          <Button variant="destructive" className="bg-red-500 hover:bg-red-600">
+          <Button variant="destructive" className="bg-red-500 hover:bg-red-600" onClick={() => socket}>
             SOS Emergency
           </Button>
         </div>
@@ -40,27 +86,32 @@ export default function ComponentA() {
         <div className="mb-8">
           <h3 className="text-gray-600 mb-4">What's the health condition?</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <button className="p-6 border rounded-lg hover:border-blue-500 flex flex-col items-center gap-2">
+            <button className={` p-6  ${patientDisease === "Heart Problem" ? "border shadow-lg border-green-800" : "border"} rounded-lg hover:border-blue-500 flex flex-col items-center gap-2`} onClick={() => setPatientDisease("Heart Problem")}>
               <Heart className="h-6 w-6 text-red-500" />
               <span>Heart Problem</span>
             </button>
-            <button className="p-6 border rounded-lg hover:border-blue-500 flex flex-col items-center gap-2">
+            <button className={`p-6 ${patientDisease === "Accident" ? "border shadow-lg border-green-800" : "border"} rounded-lg hover:border-blue-500 flex flex-col items-center gap-2`} onClick={() => setPatientDisease("Accident")}>
+
               <Car className="h-6 w-6 text-orange-500" />
               <span>Accident</span>
             </button>
-            <button className="p-6 border rounded-lg hover:border-blue-500 flex flex-col items-center gap-2">
+            <button className={`p-6 ${patientDisease === "Brain Stroke" ? "border shadow-lg border-green-800" : "border"} rounded-lg hover:border-blue-500 flex flex-col items-center gap-2`} onClick={() => setPatientDisease("Brain Stroke")}>
+
               <Brain className="h-6 w-6 text-purple-500" />
               <span>Brain Stroke</span>
             </button>
-            <button className="p-6 border rounded-lg hover:border-blue-500 flex flex-col items-center gap-2">
+            <button className={`p-6 ${patientDisease === "Fracture" ? "border shadow-lg border-green-800" : "border"} rounded-lg hover:border-blue-500 flex flex-col items-center gap-2`} onClick={() => setPatientDisease("Fracture")}>
+
               <Menu className="h-6 w-6 text-blue-500" />
               <span>Fracture</span>
             </button>
-            <button className="p-6 border rounded-lg hover:border-blue-500 flex flex-col items-center gap-2">
+            <button className={`p-6 ${patientDisease === "Breathing" ? "border shadow-lg border-green-800" : "border"} rounded-lg hover:border-blue-500 flex flex-col items-center gap-2`} onClick={() => setPatientDisease("Breathing")}>
+
               <User className="h-6 w-6 text-green-500" />
               <span>Breathing</span>
             </button>
-            <button className="p-6 border rounded-lg hover:border-blue-500 flex flex-col items-center gap-2">
+            <button className={`p-6 ${patientDisease === "Other" ? "border shadow-lg border-green-800" : "border"} rounded-lg hover:border-blue-500 flex flex-col items-center gap-2`} onClick={() => setPatientDisease("Other")}>
+
               <HelpCircle className="h-6 w-6 text-gray-500" />
               <span>Other</span>
             </button>
@@ -88,30 +139,25 @@ export default function ComponentA() {
         <div className="mb-8">
           <h3 className="text-gray-600 mb-4">Nearest Available Ambulances</h3>
           <div className="space-y-4">
-            <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Car className="h-6 w-6 text-blue-500" />
+
+            {
+              ambulanceList.length > 0 && ambulanceList?.map((item, index) => (
+                <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Car className="h-6 w-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <div className="font-medium">Ambulance No:{item?.user?.vehicleNumber}</div>
+                      <div className="text-sm text-gray-500">{item?.user?.fullName}</div>
+                    </div>
+                  </div>
+                  <Button onClick={bookNow}>{
+                    isBooked}</Button>
                 </div>
-                <div>
-                  <div className="font-medium">Ambulance #A123</div>
-                  <div className="text-sm text-gray-500">2 mins away</div>
-                </div>
-              </div>
-              <Button>Book Now</Button>
-            </div>
-            <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Car className="h-6 w-6 text-blue-500" />
-                </div>
-                <div>
-                  <div className="font-medium">Ambulance #A124</div>
-                  <div className="text-sm text-gray-500">5 mins away</div>
-                </div>
-              </div>
-              <Button>Book Now</Button>
-            </div>
+              ))
+
+            }
           </div>
         </div>
         <div className="bg-white rounded-lg shadow-sm border p-4">
