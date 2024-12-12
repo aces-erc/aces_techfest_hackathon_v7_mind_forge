@@ -42,7 +42,7 @@ const benefits = [
 
 const KeyBenefits = () => {
   return (
-    <section className="py-20 px-4 bg-gray-50">
+    <section id="services" className="py-20 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Key Benefits</h2>
@@ -68,7 +68,7 @@ const KeyBenefits = () => {
             Join our network of emergency service providers
           </p>
           <button className="bg-red-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors">
-            Get Started Today
+            <a href="/chooserole">Get Started Today</a>
           </button>
         </div>
       </div>

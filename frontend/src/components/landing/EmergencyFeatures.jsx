@@ -32,7 +32,7 @@ const EmergencyFeatures = () => {
   ];
 
   return (
-    <section className="py-20 px-4 max-w-7xl mx-auto">
+    <section id="features" className="py-20 px-4 max-w-7xl mx-auto">
       <div className="text-center mb-16">
         <h2 className="text-4xl font-bold mb-4">Emergency Response Features</h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">

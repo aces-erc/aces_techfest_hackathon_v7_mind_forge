@@ -27,7 +27,10 @@ function ChooseRole({ children, color, onClick }) {
             buttonColor="#2563eb"
             role={"Patient"}
           >
-            <FontAwesomeIcon icon={faUserInjured} className=" text-[34px]" />
+            <FontAwesomeIcon
+              icon={faUserInjured}
+              className=" text-[34px] text-blue-700"
+            />
           </Card>
           <Card
             title="Ambulance"

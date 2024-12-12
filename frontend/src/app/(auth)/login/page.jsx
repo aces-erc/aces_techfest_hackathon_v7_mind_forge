@@ -1,6 +1,6 @@
-import LoginForm from '@/components/auth/login/Login'
-import NavBar from '@/components/landing/NavBar'
-import React from 'react'
+import LoginForm from "@/components/auth/login/Login";
+import NavBar from "@/components/landing/NavBar";
+import React from "react";
 
 const Page = () => {
   return (
@@ -10,7 +10,7 @@ const Page = () => {
         <LoginForm />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

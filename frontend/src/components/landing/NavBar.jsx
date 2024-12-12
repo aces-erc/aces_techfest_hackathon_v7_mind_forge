@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import Button from "./Button";
 
@@ -10,7 +9,7 @@ const NavBar = ({ display, btnContent, hrefLink }) => {
           Sahara
         </Link>
         <div className="flex gap-24">
-          <div className={`hidden md:${display}  items-center gap-8 text-lg`}>
+          <div className={`hidden md:${display} items-center gap-8 text-lg`}>
             <Link
               href="#features"
               className="text-gray-600 hover:text-red-600 "

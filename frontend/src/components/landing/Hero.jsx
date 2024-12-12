@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -25,7 +26,7 @@ export function Hero() {
               variant="outline"
               className="px-8 py-6 text-lg border-red-600 text-red-600 hover:bg-red-50 rounded-full"
             >
-              Learn More
+              <a href="#how-it-works">Learn More</a>
             </Button>
           </div>
 
@@ -48,10 +49,15 @@ export function Hero() {
         </div>
 
         <div className="relative">
-          <div className="bg-gray-200 rounded-lg aspect-[4/3] w-full overflow-hidden flex items-center justify-center ">
-            <h1 className=" text-4xl font-bold text-red-500">
-              Emergency Response
-            </h1>
+          <div className="bg-gray-200 rounded-lg shadow-lg aspect-[4/3] w-full overflow-hidden flex items-center justify-center ">
+            <Image
+              src="/image.png" // Path to the logo in the public directory
+              alt="logo"
+              layout="fill" // Specify width
+              objectFit="contain"
+              className="rounded-lg" // Make the image rounded
+              priority // Ensures image loads quickly
+            />
           </div>
 
           <div className="absolute bottom-8 -left-8 bg-white rounded-lg shadow-lg p-4 flex items-center gap-4">

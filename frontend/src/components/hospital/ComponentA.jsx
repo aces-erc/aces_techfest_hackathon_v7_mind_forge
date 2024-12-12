@@ -11,7 +11,7 @@ const ComponentA = () => {
         </div>
       </div>
       <div className="flex gap-4 mt-8 px-24">
-        <div className="flex-1 border-2 border-solid border-black rounded-lg bg-white px-6 py-2 shadow-lg">
+        <div className="flex-1 border-2 border-solid  rounded-lg bg-white px-6 py-2 shadow-lg">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-medium text-gray-500">
               Active Cases
@@ -23,7 +23,7 @@ const ComponentA = () => {
           <p className="mt-2 text-3xl font-semibold">5</p>
         </div>
 
-        <div className="flex-1 border-2 border-solid border-black rounded-lg bg-white px-6 py-2 shadow-lg">
+        <div className="flex-1 border-2 border-solid  rounded-lg bg-white px-6 py-2 shadow-lg">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-medium text-gray-500">
               Incoming Today
@@ -35,7 +35,7 @@ const ComponentA = () => {
           <p className="mt-2 text-3xl font-semibold">12</p>
         </div>
 
-        <div className="flex-1 border-2 border-solid border-black rounded-lg bg-white px-6 py-2 shadow-lg">
+        <div className="flex-1 border-2 border-solid  rounded-lg bg-white px-6 py-2 shadow-lg">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-medium text-gray-500">
               Average Response
