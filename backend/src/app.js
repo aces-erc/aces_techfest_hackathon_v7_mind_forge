@@ -37,6 +37,16 @@ io.on('connection', (socket) => {
         io.emit('ambulanceLocation', data);
     });
 
+    socket.on("bookAmbulance", (data)=>{
+        console.log("Book ambulance data: ", data)
+        io.emit("bookAmbulance", data)
+    })
+
+    socket.on("decision", (data)=>{
+        console.log("decision: ", data)
+        io.emit("decision", data)
+    })
+
     socket.on('disconnect', () => {
         console.log('Server disconnected');
     });

@@ -76,8 +76,9 @@ export default function RandomLocationsMap() {
     const [locations, setLocations] = useState([])
     const [userLocation, setUserLocation] = useState(null)
     const [locationError, setLocationError] = useState(null)
-    const {setUserLocationStore} = useLocation();
-    const { ambulanceLocation} = useSocket();
+    const { setUserLocationStore, userLocationStore } = useLocation();
+    const { ambulanceLocation } = useSocket();
+
     useEffect(() => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
@@ -87,7 +88,6 @@ export default function RandomLocationsMap() {
                         lng: position.coords.longitude
                     };
                     setUserLocation(userPos);
-                    setUserLocationStore(userPos);
                     setLocations(ambulanceLocation);
                 },
                 (error) => {
@@ -104,9 +104,9 @@ export default function RandomLocationsMap() {
         }
     }, [])
 
-    useEffect(()=>{
-        console.log("sjd: ", ambulanceLocation)
-    }, [ambulanceLocation, locations])
+    useEffect(() => {
+        localStorage.setItem("userLocation", JSON.stringify(userLocation))
+    }, [userLocation])
 
     return (
         <div className="flex flex-col items-center space-y-4">

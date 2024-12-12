@@ -13,9 +13,31 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useUserStore } from "@/store/userStore";
 import UserLocationAmbulance from "./UserLocationAmbulance";
+import { useSocket } from "@/store/useSocket";
+import { useEffect, useState } from "react";
 
 export default function ComponentA() {
   const { user } = useUserStore();
+  const { socket, setPatientDetail, patientDetail } = useSocket();
+  const [decision, setDecision] = useState("");
+
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("bookAmbulance", (data) => {
+        console.log("book call from patient: ", data)
+        setPatientDetail(data);
+
+      })
+    }
+  }, [socket])
+
+  const handlePatientRequest = (decision) => {
+    if (socket) {
+      setDecision(decision)
+      socket.emit("decision", decision)
+    }
+  }
 
   return (
     <div className="container mx-auto  space-y-6">
@@ -74,59 +96,52 @@ export default function ComponentA() {
             <h1 className=" text-2xl font-bold">Patient requests</h1>
           </div>
           <div className="space-y-4">
-            <Card className="border-red-100 bg-red-50">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <span className="px-3 py-1 bg-red-200 text-red-800 text-sm font-medium rounded">
-                      EMERGENCY
-                    </span>
-                    <span className="text-gray-500 text-sm">2 mins ago</span>
+            {
+              patientDetail &&
+              <Card className="border-red-100 bg-red-50 mb-2">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                      <span className="px-3 py-1 bg-red-200 text-red-800 text-sm font-medium rounded">
+                        EMERGENCY
+                      </span>
+                    </div>
+                    <div className="space-x-2">
+                      {
+                        decision ? 
+                        <Button variant="default" disable >{decision}</Button>
+                        : 
+                        <>
+                          <Button variant="default" onClick={() => handlePatientRequest("Accepted")}>Accept</Button>
+                          <Button variant="outline" onClick={() => handlePatientRequest("Declined")}>Decline</Button>
+                        </>
+                      }
+                    
+                    </div>
                   </div>
-                  <div className="space-x-2">
-                    <Button variant="default">Accept</Button>
-                    <Button variant="outline">Decline</Button>
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">
-                  John Doe - Cardiac Emergency
-                </h3>
-                <p className="text-gray-600 mb-2">
-                  Severe chest pain and difficulty breathing
-                </p>
-                <div className="flex items-center text-gray-500">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  <span>2.5 km away - Central Park Area</span>
-                </div>
-              </CardContent>
-            </Card>
+                  <h3 className="text-lg font-semibold mb-2">
+                    {patientDetail?.user?.fullName} - {patientDetail?.disease}
+                  </h3>
+                  <h4>
+                    {patientDetail?.user.phoneNumber}
+                  </h4>
+                </CardContent>
+              </Card>
+            }
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <span className="px-3 py-1 bg-blue-200 text-blue-800 text-sm font-medium rounded">
-                      STANDARD
-                    </span>
-                    <span className="text-gray-500 text-sm">5 mins ago</span>
-                  </div>
-                  <div className="space-x-2">
-                    <Button variant="default">Accept</Button>
-                    <Button variant="outline">Decline</Button>
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Jane Smith - Fracture
-                </h3>
-                <p className="text-gray-600 mb-2">
-                  Possible leg fracture from sports injury
-                </p>
-                <div className="flex items-center text-gray-500">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  <span>3.8 km away - Downtown Stadium</span>
-                </div>
-              </CardContent>
-            </Card>
+            {
+              !patientDetail &&
+              <Card className="border-red-100 bg-red-50">
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold mb-2">
+                    Patient Not Available
+                  </h3>
+                </CardContent>
+              </Card>
+            }
+
+
+
           </div>
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-500">Showing 1 to 2 of 8 results</p>

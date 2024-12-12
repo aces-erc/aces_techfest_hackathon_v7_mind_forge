@@ -11,7 +11,7 @@ import { useUserStore } from '@/store/userStore'
 const customIcon = new L.Icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/128/666/666201.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
+    iconSize: [20, 35],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
@@ -20,7 +20,7 @@ const customIcon = new L.Icon({
 const userIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
+    iconSize: [50, 61],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
@@ -76,9 +76,8 @@ export default function UserLocationAmbulance() {
     const [locations, setLocations] = useState([])
     const [userLocation, setUserLocation] = useState(null)
     const [locationError, setLocationError] = useState(null)
-    const { socket } = useSocket();
+    const { socket, patientDetail } = useSocket();
     const { user } = useUserStore();
-
    
 
     useEffect(() => {
@@ -90,7 +89,7 @@ export default function UserLocationAmbulance() {
                         lng: position.coords.longitude
                     };
                     setUserLocation(userPos);
-                    setLocations(getAmbulanceLocations(userPos, 5));
+                   
                 },
                 (error) => {
                     setLocationError("Unable to retrieve your location")
@@ -114,6 +113,17 @@ export default function UserLocationAmbulance() {
         console.log("Socket: ", socket);
         console.log("User: ", user);
     }, [socket, user, userLocation])
+
+    
+
+    useEffect(()=>{
+        if(patientDetail){
+            const data = [
+                patientDetail.location
+            ]
+            setLocations(data);
+        }
+    }, [patientDetail, socket])
 
     return (
         <div className="flex flex-col items-center space-y-4">
