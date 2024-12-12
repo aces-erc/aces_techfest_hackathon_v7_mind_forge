@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./routes/user.routes.js";
+import patientRouter from "./routes/patient.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { Server as SocketServer } from 'socket.io'; // import the server part of socket.io
@@ -45,6 +46,7 @@ app.use(cookieParser()) // allows to access cookies of browser as well set the c
 
 // routes
 app.use("/api/v1/user", userRouter)
+app.use("/api/v1/patient", patientRouter)
 
 app.use((err, req, res, next) => {
     console.log("error: ", err)
@@ -57,13 +59,13 @@ app.use((err, req, res, next) => {
     } else if (err.code === 11000) {
         console.log("error: dup", err.errorResponse.code)
         const dupKey = err.errorResponse.keyPattern
-        
+
         res.status(400).json({
             success: "False",
             message: "Duplicate key error",
             errors: dupKey
         });
-       
+
     } else {
         res.status(500).json({
             success: false,
