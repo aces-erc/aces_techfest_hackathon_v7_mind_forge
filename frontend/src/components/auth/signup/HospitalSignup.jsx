@@ -76,7 +76,7 @@ export default function HospitalSignupForm() {
             console.log("Hospital: ", newData)
             const res = await axios.post(`${backendApi}/user/register`, newData)
             console.log(res)
-            // router.push("/login");
+            router.push("/login");
         } catch (error) {
             toast({
                 title: "Error",

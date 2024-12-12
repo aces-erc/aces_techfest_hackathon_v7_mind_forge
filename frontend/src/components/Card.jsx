@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 const Card = ({ children, title, description, buttonText, buttonColor, role }) => {
 
-  const {setUserRole} = useUserStore();
+  const { setUserRole } = useUserStore();
   const router = useRouter();
 
   const handleRoleClick = (role) => {
@@ -23,7 +23,7 @@ const Card = ({ children, title, description, buttonText, buttonColor, role }) =
     </div>
     <h2 className="text-2xl font-semibold">{title}</h2>
     <p className="text-gray-600 text-lg">{description}</p>
-    <Button color={buttonColor} onClick={()=>handleRoleClick(role)}>{buttonText}</Button>
+    <Button color={buttonColor} onClick={() => handleRoleClick(role)}>{buttonText}</Button>
   </div>
 }
 

@@ -20,11 +20,6 @@ import { backendApi } from "@/lib/constant"
 import { useRouter } from "next/navigation"
 import { RotatingLines } from "react-loader-spinner"
 import { useToast } from "@/hooks/use-toast"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
 
 
 const formSchema = z.object({
@@ -39,6 +34,7 @@ const formSchema = z.object({
         message: "Role is required name must be at least 1 characters long.",
     }),
     phoneNumber: z.string().min(10),
+    dob: z.string().min(1),
 })
 
 export default function PatientSignupForm() {
@@ -55,6 +51,7 @@ export default function PatientSignupForm() {
             password: "",
             role: "Patient",
             phoneNumber: "",
+            dob: "",
         },
     })
 
@@ -62,15 +59,15 @@ export default function PatientSignupForm() {
         setIsLoading(true)
 
         try {
-            const newValue = { ...values, dob: date }
-            const res = await axios.post(`${backendApi}/user/register`, newValue)
+            console.log(values)
+            const res = await axios.post(`${backendApi}/user/register`, values)
            
             console.log(res)
-            // router.push("/login");
+            router.push("/login");
         } catch (error) {
-            console.log(error.response.data)
-            const duplicateKeys = Object.keys(error.response.data.errors)
-            const errMsg = `${error.response.data.message}: ${duplicateKeys.join(", ")}`
+            console.log(error.response?.data)
+            const duplicateKeys = Object.keys(error.response?.data?.errors)
+            const errMsg = `${error.response?.data?.message}: ${duplicateKeys.join(", ")}`
             toast({
                 title: "Error",
                 description: errMsg,
@@ -150,31 +147,19 @@ export default function PatientSignupForm() {
                         </div>
 
                         <div className="flex items-center ">
-                            <Popover>
-                                <div className="flex flex-col gap-3">
-                                <FormLabel>Date of birth</FormLabel>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant={"outline"}
-                                        className={cn(
-                                            "w-[220px] justify-start text-left font-normal",
-                                            !date && "text-muted-foreground"
-                                        )}
-                                    >
-                                        <CalendarIcon />
-                                        {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                    </Button>
-                                </PopoverTrigger>
-                                </div>
-                                <PopoverContent className="w-auto p-0">
-                                    <Calendar
-                                        mode="single"
-                                        selected={date}
-                                        onSelect={setDate}
-                                        initialFocus
-                                    />
-                                </PopoverContent>
-                            </Popover>
+                        <FormField
+                                control={form.control}
+                                name="dob"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Date of Birth</FormLabel>
+                                        <FormControl>
+                                            <Input type="date" placeholder="Select DOB" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
                         <Button type="submit" className="w-full " disabled={isLoading}>
                             {isLoading ?

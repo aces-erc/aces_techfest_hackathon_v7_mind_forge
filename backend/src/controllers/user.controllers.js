@@ -80,6 +80,9 @@ const login = catchAsync(async (req, res, next) => {
     }
 
     user.password = undefined // should not show up even if its hashed
+    user.__v = undefined
+    user.createdAt = undefined
+    user.updatedAt = undefined
 
     res
         .status(200)

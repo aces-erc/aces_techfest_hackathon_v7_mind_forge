@@ -1,6 +1,7 @@
 "use client"
 import AmbulanceSignupForm from '@/components/auth/signup/AmbulanceSignup'
 import HospitalSignupForm from '@/components/auth/signup/HospitalSignup';
+import NavBar from '@/components/landing/NavBar';
 
 import { useUserStore } from '@/store/userStore';
 import dynamic from 'next/dynamic';
@@ -11,7 +12,7 @@ import { RotatingLines } from 'react-loader-spinner';
 const LocationPicker = dynamic(() => import('@/components/LocationPicket'), {
     ssr: false
 })
-const PatientSignupForm = dynamic(()=>import('@/components/auth/signup/PatientSignup'))
+const PatientSignupForm = dynamic(() => import('@/components/auth/signup/PatientSignup'))
 
 
 const Page = () => {
@@ -44,24 +45,28 @@ const Page = () => {
     }
 
     return (
-        <div className="flex h-screen items-center justify-center">
+        <div>
+            <NavBar btnContent={"Login"} hrefLink={"/login"} />
+            <div className="flex h-[90vh] items-center justify-center  bg-slate-200">
 
-            {
-                role === "Patient" && !loading &&<PatientSignupForm/>
-            }
-            {
-                role === "Hospital" && !loading &&
-                <div className='flex justify-between w-full items-center px-8'>
-                    <HospitalSignupForm />
-                    <LocationPicker />
-                </div>
+                {
+                    role === "Patient" && !loading && <PatientSignupForm />
+                }
+                {
+                    role === "Hospital" && !loading &&
+                    <div className='flex justify-between w-full items-center px-8'>
+                        <HospitalSignupForm />
+                        <LocationPicker />
+                    </div>
 
-            }
-            {
-                role === "Ambulance" && <AmbulanceSignupForm />
-            }
+                }
+                {
+                    role === "Ambulance" && <AmbulanceSignupForm />
+                }
 
+            </div>
         </div>
+
     )
 }
 
