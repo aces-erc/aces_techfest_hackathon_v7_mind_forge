@@ -2,6 +2,7 @@
 
 import { useSocket } from "@/store/useSocket";
 import { useEffect } from "react";
+import UserLocationHospital from "./UserLocationHospital";
 
 const ComponentB = () => {
 
@@ -44,20 +45,22 @@ const ComponentB = () => {
                 }
               </td>
               <td className="border border-gray-300 px-4 py-2">{
-           incommingPatient &&   "#"+incommingPatient?.ambulanceNo
+                incommingPatient && "#" + incommingPatient?.ambulanceNo
               }</td>
               <td className="border border-gray-300 px-4 py-2 text-red-700">
-               {
-                incommingPatient && "Incomming"
-               } 
+                {
+                  incommingPatient && "Incomming"
+                }
               </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div id="Name" className=" border-2 border-solid ">
-        <h1>Live Tracking Map</h1>
-        <div className=" m-4 h-[330px] w-full bg-blue-300 "></div>
+        <h1>Tracking Map</h1>
+        <div className=" rounded-lg mb-4 flex items-center justify-center text-gray-500 ">
+          <UserLocationHospital />
+        </div>
       </div>
     </div>
   );
