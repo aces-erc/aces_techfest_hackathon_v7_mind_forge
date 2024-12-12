@@ -1,5 +1,6 @@
 import { Ambulance } from '../models/ambulance.model.js';
 import { Patient } from '../models/patient.model.js';
+import { Hospital } from '../models/hospital.model.js';
 import { catchAsync } from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 
@@ -80,7 +81,7 @@ export const notifyHospital = catchAsync(async (req, res) => {
             message: 'Hospital has been notified about the incoming patient.',
             hospital: hospital._id,
             ambulance: ambulance._id,
-            patient: { disease, healthConditionRating }
+            patient: { disease, healthConditionRating, waitingStatus: "pickedup" }
         });
     } catch (error) {
         throw new AppError(error.message, error.statusCode)
