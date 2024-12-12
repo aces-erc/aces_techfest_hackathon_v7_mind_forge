@@ -6,6 +6,7 @@ import ComponentB from "@/components/patient/ComponentB";
 import ComponentC from "@/components/patient/ComponentC";
 
 export default function Patient() {
+   
   return (
     <div className="flex">
       <Sidebar />
