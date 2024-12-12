@@ -3,7 +3,6 @@ import DashboardLayout from "@/components/landing/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import React from "react";
 
-
 const BookingForm = () => (
   <Card className="lg:col-span-2 p-6">
     <h2 className="text-xl font-semibold mb-4">Book Ambulance</h2>
