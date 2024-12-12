@@ -2,6 +2,7 @@ import { Building2, MapPin, Ambulance, Map } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LocationPicker from "../LocationPicket";
+import AmbulanceLocationsMap from "./NearestAmbulanceMap";
 
 export default function ComopnentB() {
   return (
@@ -72,7 +73,8 @@ export default function ComopnentB() {
         <h2 className="font-semibold mb-4">Location Tracking</h2>
 
         <div className= " rounded-lg mb-4 flex items-center justify-center text-gray-500 ">
-        <LocationPicker/>
+        {/* <LocationPicker/> */}
+        <AmbulanceLocationsMap/>
         </div>
 
         <div className="space-y-4">
