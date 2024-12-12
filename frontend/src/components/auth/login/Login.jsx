@@ -36,7 +36,7 @@ export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
     const { toast } = useToast()
-    const {setUser} = useUserStore();
+    const {setUser, role} = useUserStore();
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -53,11 +53,12 @@ export default function LoginForm() {
             const res = await axios.post(`${backendApi}/user/login`, values, { withCredentials: true })
             console.log(res.data.user)
             setUser(res.data.user)
-            // router.push("/dashboard");
+            router.push(`/dashboard/${res.data.user.role.toLowerCase()}`);
         } catch (error) {
+            console.log(error)
             toast({
                 title: "Error",
-                description: error.response.data.message,
+                description: error?.response?.data?.message,
                 variant: "destructive",
             })
         }

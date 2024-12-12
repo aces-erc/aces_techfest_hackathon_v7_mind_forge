@@ -12,12 +12,17 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUserStore } from "@/store/userStore";
+// import { useRouter } from 'next/router';
 
 export default function ComponentA() {
+  // const router = useRouter();
+  // const {  } = router.query;
+  const {user} = useUserStore();
   return (
     <main className="flex-1">
       <div className="flex justify-between items-center px-8 pt-8 pb-6 bg-slate-200">
-        <h1 className="text-2xl font-semibold">Welcome, John Doe!</h1>
+        <h1 className="text-2xl font-semibold">Welcome,{user?.fullName}</h1>
         <div className="flex items-center gap-4">
           <Bell className="h-5 w-5 text-gray-500" />
           <LogOut className="h-5 w-5 text-gray-500" />

@@ -8,6 +8,7 @@ import Footer from "@/components/landing/Footer";
 import KeyBenefits from "@/components/landing/KeyBenefit";
 
 export default function Home() {
+
   return (
     <main>
       <NavBar
