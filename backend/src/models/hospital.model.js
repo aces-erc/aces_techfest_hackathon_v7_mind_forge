@@ -9,7 +9,7 @@ const hospitalSchema = new mongoose.Schema({
     hospitalLocation: {
         type: {
             latitude: { type: Number, required: true },
-            longitude: { type: Number, required: true }
+            longitude: { type: Number, required: true },
         },
         required: true
     },

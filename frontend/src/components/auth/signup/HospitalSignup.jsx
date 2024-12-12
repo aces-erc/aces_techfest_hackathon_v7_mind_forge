@@ -70,7 +70,7 @@ export default function HospitalSignupForm() {
 
         try {
             const newData = {
-                ...values, hospitalLocation: { latitude: hospoitalPosition.lat, longitude: hospoitalPosition.lng }
+                ...values,  latitude: hospoitalPosition.lat, longitude: hospoitalPosition.lng
             }
 
             console.log("Hospital: ", newData)
