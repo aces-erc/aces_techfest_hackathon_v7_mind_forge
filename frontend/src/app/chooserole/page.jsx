@@ -26,6 +26,7 @@ function ChooseRole({ children, color, onClick }) {
             description="Register as a patient to book emergency ambulance services"
             buttonText="Register as Patient"
             buttonColor="#2563eb"
+            role={"Patient"}
           >
             <FontAwesomeIcon icon={faUserInjured} className=" text-[34px]" />
           </Card>
@@ -34,6 +35,7 @@ function ChooseRole({ children, color, onClick }) {
             description="Register as an ambulance driver to provide emergency services"
             buttonText="Register as Driver"
             buttonColor="#34A853"
+            role={"Ambulance"}
           >
             <FontAwesomeIcon
               icon={faTruckMedical}
@@ -45,6 +47,7 @@ function ChooseRole({ children, color, onClick }) {
             description="Register your hospital to coordinate emergency services"
             buttonText="Register Hospital"
             buttonColor="#EA4335"
+            role={"Hospital"}
           >
             <FontAwesomeIcon
               icon={faHospital}

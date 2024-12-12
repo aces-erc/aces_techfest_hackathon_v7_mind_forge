@@ -20,6 +20,7 @@ import { backendApi } from "@/lib/constant"
 import { useRouter } from "next/navigation"
 import { RotatingLines } from "react-loader-spinner"
 import { useToast } from "@/hooks/use-toast"
+import { useUserStore } from "@/store/userStore"
 
 
 const formSchema = z.object({
@@ -35,6 +36,7 @@ export default function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
     const { toast } = useToast()
+    const {setUser} = useUserStore();
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -49,8 +51,9 @@ export default function LoginForm() {
 
         try {
             const res = await axios.post(`${backendApi}/user/login`, values, { withCredentials: true })
-            console.log(res)
-            router.push("/dashboard");
+            console.log(res.data.user)
+            setUser(res.data.user)
+            // router.push("/dashboard");
         } catch (error) {
             toast({
                 title: "Error",
