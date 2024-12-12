@@ -1,7 +1,8 @@
+import Button from "@/components/Button";
+import DashboardLayout from "@/components/landing/DashboardLayout";
+import { Card } from "@/components/ui/card";
 import React from "react";
-import DashboardLayout from "../components/DashboardLayout";
-import Button from "../components/Button";
-import Card from "../components/Card";
+
 
 const BookingForm = () => (
   <Card className="lg:col-span-2 p-6">
