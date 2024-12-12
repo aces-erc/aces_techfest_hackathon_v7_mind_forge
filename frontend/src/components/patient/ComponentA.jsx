@@ -1,3 +1,4 @@
+"use client"
 import {
   Bell,
   Brain,
@@ -13,12 +14,35 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/store/userStore";
-// import { useRouter } from 'next/router';
+import { useEffect } from "react";
+import { useSocket } from "@/store/useSocket";
 
 export default function ComponentA() {
-  // const router = useRouter();
-  // const {  } = router.query;
-  const {user} = useUserStore();
+  const { user } = useUserStore();
+  const { socket , ambulanceList, setAmbulanceList, setAmbulanceLocation, ambulanceLocation} = useSocket();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('ambulanceLocation', (data) => {
+        setAmbulanceList([...ambulanceList,data]);
+        setAmbulanceLocation([...ambulanceLocation,data?.location]);
+        console.log("Ambulance Location: ", data);
+      });
+    }
+  }, [socket])
+
+  useEffect(()=>{
+    console.log("List: ",ambulanceList);
+    console.log("List Location: ",ambulanceLocation);
+  }, [ambulanceList])
+
+
+  const bookNow = ()=>{
+    if(socket){
+      socket.emit('bookAmbulance', {user, location: userLocation});
+    }
+  }
+
   return (
     <main className="flex-1">
       <div className="flex justify-between items-center px-8 pt-8 pb-6 bg-slate-200">
@@ -32,7 +56,7 @@ export default function ComponentA() {
       <div id="emergency" className="px-20 pt-14">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Book Emergency Ambulance</h2>
-          <Button variant="destructive" className="bg-red-500 hover:bg-red-600">
+          <Button variant="destructive" className="bg-red-500 hover:bg-red-600" onClick={() => socket}>
             SOS Emergency
           </Button>
         </div>
@@ -88,30 +112,24 @@ export default function ComponentA() {
         <div className="mb-8">
           <h3 className="text-gray-600 mb-4">Nearest Available Ambulances</h3>
           <div className="space-y-4">
-            <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Car className="h-6 w-6 text-blue-500" />
+
+            {
+            ambulanceList.length >0 &&  ambulanceList?.map((item, index) => (
+                <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Car className="h-6 w-6 text-blue-500" />
+                    </div>
+                    <div>
+                      <div className="font-medium">Ambulance No:{item?.user?.vehicleNumber}</div>
+                      <div className="text-sm text-gray-500">{item?.user?.fullName}</div>
+                    </div>
+                  </div>
+                  <Button>Book Now</Button>
                 </div>
-                <div>
-                  <div className="font-medium">Ambulance #A123</div>
-                  <div className="text-sm text-gray-500">2 mins away</div>
-                </div>
-              </div>
-              <Button>Book Now</Button>
-            </div>
-            <div className="bg-white p-4 rounded-lg border flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Car className="h-6 w-6 text-blue-500" />
-                </div>
-                <div>
-                  <div className="font-medium">Ambulance #A124</div>
-                  <div className="text-sm text-gray-500">5 mins away</div>
-                </div>
-              </div>
-              <Button>Book Now</Button>
-            </div>
+              ))
+
+            }
           </div>
         </div>
         <div className="bg-white rounded-lg shadow-sm border p-4">

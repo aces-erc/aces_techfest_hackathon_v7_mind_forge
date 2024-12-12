@@ -27,6 +27,16 @@ const io = new SocketServer(server, {
 io.on('connection', (socket) => {
     console.log('Server connected');
 
+    socket.on('msg', (data) => {
+        console.log('Message from client: ', data);
+    }
+    )
+
+    socket.on('ambulanceLocation', (data) => {
+        console.log("Ambulance location: ", data);
+        io.emit('ambulanceLocation', data);
+    });
+
     socket.on('disconnect', () => {
         console.log('Server disconnected');
     });

@@ -24,7 +24,6 @@ export default function RootLayout({ children }) {
     if (typeof window !== 'undefined') {
       const socket = io('http://localhost:4000');
       setSocket(socket);
-
       return () => {
         socket.disconnect();
       };

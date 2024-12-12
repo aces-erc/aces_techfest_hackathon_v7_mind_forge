@@ -1,9 +1,9 @@
+"use client";
 import {
   Users,
   CheckCircle,
   XCircle,
   MapPin,
-  AlertTriangle,
   ChevronLeft,
   ChevronRight,
   Bell,
@@ -11,12 +11,16 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useUserStore } from "@/store/userStore";
+import UserLocationAmbulance from "./UserLocationAmbulance";
 
 export default function ComponentA() {
+  const { user } = useUserStore();
+
   return (
     <div className="container mx-auto  space-y-6">
       <div className="flex justify-between items-center px-8 pt-8 pb-6 bg-slate-200">
-        <h1 className="text-2xl font-semibold">Welcome, John Doe!</h1>
+        <h1 className="text-2xl font-semibold">Welcome, {user?.fullName}</h1>
         <div className="flex items-center gap-4">
           <Bell className="h-5 w-5 text-gray-500" />
           <LogOut className="h-5 w-5 text-gray-500" />
@@ -139,6 +143,11 @@ export default function ComponentA() {
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
+          </div>
+          <h2 className="font-semibold mb-4">Location Tracking</h2>
+
+          <div className=" rounded-lg mb-4 flex items-center justify-center text-gray-500 ">
+            <UserLocationAmbulance />
           </div>
         </div>
       </div>
