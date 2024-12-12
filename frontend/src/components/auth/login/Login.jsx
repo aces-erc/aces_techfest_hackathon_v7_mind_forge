@@ -53,7 +53,8 @@ export default function LoginForm() {
             const res = await axios.post(`${backendApi}/user/login`, values, { withCredentials: true })
             console.log(res.data.user)
             setUser(res.data.user)
-            router.push(`/dashboard/${res.data.user.role.toLowerCase()}`);
+            window.location.replace(`/dashboard/${res.data.user.role.toLowerCase()}`);
+            // router.push(`/dashboard/${res.data.user.role.toLowerCase()}`);
         } catch (error) {
             console.log(error)
             toast({

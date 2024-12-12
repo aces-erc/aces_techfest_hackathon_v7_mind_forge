@@ -47,6 +47,10 @@ io.on('connection', (socket) => {
         io.emit("decision", data)
     })
 
+    socket.on("notifyHospital", (data) => {
+        console.log("Notify hospital: ", data)
+        io.emit("notifyHospital", data)
+    })
     socket.on('disconnect', () => {
         console.log('Server disconnected');
     });
