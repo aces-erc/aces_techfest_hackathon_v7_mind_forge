@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { Home, Users, Hospital, MapPin, Settings } from "lucide-react";
 
 const Sidebar = () => {
   return (
     <aside className="w-64 bg-slate-900 text-white p-4 sticky top-0">
       <div className="flex items-center gap-2 mb-8">
-        <span className="text-2xl font-semibold text-blue-400">Sahara</span>
+        <Link href={"/"} className="text-2xl font-semibold text-blue-400">
+          Sahara
+        </Link>
       </div>
 
       <nav className="space-y-2">
